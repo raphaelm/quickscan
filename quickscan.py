@@ -229,13 +229,20 @@ with tempfile.TemporaryDirectory() as d:
     pdfs = []
     if ocr:
         for i in range(THREADS):
-            t = Thread(target=worker)
-            t.daemon = True
-            t.start()
-        for f in sorted([f for f in os.listdir() if f.endswith(".pnm")], key=num):
-            outfile = 'out%000d.pdf' % num(f)
-            q.put(f)
-            pdfs.append(outfile)
+            th = Thread(target=worker)
+            th.daemon = True
+            th.start()
+
+        ignore = input_string(
+            'Ignore some pages? Seperate numbers (starting at 1) with commas',
+            'Pages to ignore', ''
+        ).split(",")
+        for i, f in enumerate(sorted([f for f in os.listdir() if f.endswith(".pnm")], key=num)):
+            if str(i + 1) not in ignore:
+                outfile = 'out%000d.pdf' % num(f)
+                q.put(f)
+                pdfs.append(outfile)
+
         q.join()
         gsargs = [
             GHOSTSCRIPT,
@@ -246,7 +253,12 @@ with tempfile.TemporaryDirectory() as d:
         subprocess.call(gsargs)
     else:
         convertargs = [IMAGEMAGICK_CONVERT] + CUSTOM_CONVERT_SETTINGS
-        convertargs += sorted([f for f in os.listdir() if f.endswith(".pnm")], key=num)
+        ignore = input_string(
+            'Ignore some pages? Seperate numbers (starting at 1) with commas',
+            'Pages to ignore', ''
+        ).split(",")
+        pnms = [f for i, f in enumerate(sorted([f for f in os.listdir() if f.endswith(".pnm")], key=num)) if str(i + 1) not in ignore]
+        convertargs += sorted(pnms, key=num)
         convertargs.append(catfile)
         print(" ".join(convertargs))
         subprocess.call(convertargs)
