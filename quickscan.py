@@ -191,7 +191,7 @@ pages = input_number(
     -1
 )
 
-if sys.argc < 2:
+if len(sys.argv) < 2:
     catfile = os.path.abspath(input_string(
         'Output filename',
         'Filename',
