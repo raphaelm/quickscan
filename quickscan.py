@@ -191,11 +191,14 @@ pages = input_number(
     -1
 )
 
-catfile = os.path.abspath(input_string(
-    'Output filename',
-    'Filename',
-    'scan-%s.pdf' % datetime.now().strftime('%Y-%m-%d-%H-%M')
-))
+if sys.argc < 2:
+    catfile = os.path.abspath(input_string(
+        'Output filename',
+        'Filename',
+        'scan-%s.pdf' % datetime.now().strftime('%Y-%m-%d-%H-%M')
+    ))
+else:
+    catfile = sys.argv[1]
 
 scanargs = [
     SCANIMAGE,
