@@ -67,7 +67,7 @@ def input_string(text, prompt, default=None):
             print(t.bold(prompt), end=": ")
         inp = input().strip()
         if inp == "":
-            if default:
+            if default is not None:
                 return default
             print(t.bold_red('Input is required.'))
         else:
@@ -84,7 +84,7 @@ def input_number(text, prompt, default=None):
             print(t.bold(prompt), end=": ")
         inp = input().strip()
         if inp == "":
-            if default:
+            if default is not None:
                 return default
             print(t.bold_red('Input is required.'))
         else:
