@@ -10,7 +10,8 @@ from datetime import datetime
 from queue import Queue
 from threading import Thread
 
-DEVICE = "fujitsu:ScanSnap iX500:68810"
+#DEVICE = "fujitsu:ScanSnap iX500:68810"
+DEVICE = "net:192.168.0.7:fujitsu:ScanSnap iX500:68810"
 SCANIMAGE = "scanimage"
 CUSTOM_SCANIMAGE_SETTINGS = [
     '--page-height', '300mm', '-y', '300mm',
